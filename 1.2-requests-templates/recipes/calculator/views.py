@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import HttpResponse
 
 DATA = {
     'omlet': {
@@ -22,9 +23,15 @@ DATA = {
 # Напишите ваш обработчик. Используйте DATA как источник данных
 # Результат - render(request, 'calculator/index.html', context)
 # В качестве контекста должен быть передан словарь с рецептом:
-# context = {
-#   'recipe': {
-#     'ингредиент1': количество1,
-#     'ингредиент2': количество2,
-#   }
-# }
+
+
+def recipes(request, dish):
+    servings = int(request.GET.get("servings", 1))
+    context = {}
+    for keys in DATA.keys():
+        if keys == dish:
+            context['recipe'] = DATA[dish]
+            for k in context['recipe']:
+                context['recipe'][k] = servings * DATA[dish][k]
+
+    return render(request, 'calculator/index.html', context)
