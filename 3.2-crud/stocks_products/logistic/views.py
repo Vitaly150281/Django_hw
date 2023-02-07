@@ -4,6 +4,7 @@ from logistic.models import Product, Stock
 from logistic.serializers import ProductSerializer, StockSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
+from rest_framework.pagination import LimitOffsetPagination
 
 
 class ProductViewSet(ModelViewSet):
@@ -11,6 +12,7 @@ class ProductViewSet(ModelViewSet):
     serializer_class = ProductSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['title', 'description']
+    pagination_class = LimitOffsetPagination
 
 
 class StockViewSet(ModelViewSet):
@@ -18,3 +20,4 @@ class StockViewSet(ModelViewSet):
     serializer_class = StockSerializer
     filter_backends = [DjangoFilterBackend]
     filter_fields = ['address', 'products']
+    pagination_class = LimitOffsetPagination
